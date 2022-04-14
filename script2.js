@@ -49,20 +49,21 @@ function checkLength(input, min, max) {
 function checkPasswordsMatch(input1, input2){
 if(input1.value !== input2.value){
 showError(input2, `Passwords do not match`)
-}else{
-  showSuccess(input1, input2)
 }
 }
 
 // Check required
 function checkRequired(inputArr) {
+  let isRequired = false
   inputArr.forEach((input) => {
     if (input.value.trim() === "") {
       showError(input, `${getFieldName(input)} is required`)
+      isRequired = true
     } else {
       showSuccess(input)
     }
   })
+  return isRequired
 }
 
 // Get getFieldName and make first letter uppercase
@@ -75,9 +76,10 @@ form.addEventListener("submit", submit)
 function submit(e) {
   e.preventDefault()
 
-  checkRequired([username, email, password, confirmPassword])
+  if (checkRequired([username, email, password, confirmPassword])){
   checkLength(username, 3, 15)
   checkLength(password, 6, 25)
   checkEmail(email)
   checkPasswordsMatch(password, confirmPassword)
+  }
 }
